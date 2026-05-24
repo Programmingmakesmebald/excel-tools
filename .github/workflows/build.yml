@@ -47,11 +47,14 @@ jobs:
       - name: Build Mac app
         run: python build.py
 
+      - name: Package Mac app as zip
+        run: cd dist && zip -r Excel进销存工具-Mac.zip Excel进销存工具.app
+
       - name: Upload Mac artifact
         uses: actions/upload-artifact@v4
         with:
           name: Excel进销存工具-Mac
-          path: dist/Excel进销存工具.app
+          path: dist/Excel进销存工具-Mac.zip
 
   release:
     needs: [build-windows, build-mac]
@@ -72,4 +75,4 @@ jobs:
         with:
           files: |
             Excel进销存工具.exe
-            Excel进销存工具.app
+            Excel进销存工具-Mac.zip
