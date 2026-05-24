@@ -25,11 +25,14 @@ jobs:
       - name: Build Windows executable
         run: python build.py
 
+      - name: Rename for distribution
+        run: mv dist/ExcelInventoryTool.exe dist/Excel进销存工具-Windows.exe
+
       - name: Upload Windows artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Excel进销存工具-Windows
-          path: dist/Excel进销存工具.exe
+          name: windows-exe
+          path: dist/Excel进销存工具-Windows.exe
 
   build-mac:
     runs-on: macos-latest
@@ -48,12 +51,12 @@ jobs:
         run: python build.py
 
       - name: Package Mac app as zip
-        run: cd dist && zip -r Excel进销存工具-Mac.zip Excel进销存工具.app
+        run: cd dist && zip -r Excel进销存工具-Mac.zip ExcelInventoryTool.app
 
       - name: Upload Mac artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Excel进销存工具-Mac
+          name: mac-zip
           path: dist/Excel进销存工具-Mac.zip
 
   release:
@@ -63,16 +66,23 @@ jobs:
       - name: Download Windows artifact
         uses: actions/download-artifact@v4
         with:
-          name: Excel进销存工具-Windows
+          name: windows-exe
 
       - name: Download Mac artifact
         uses: actions/download-artifact@v4
         with:
-          name: Excel进销存工具-Mac
+          name: mac-zip
 
       - name: Create release
         uses: softprops/action-gh-release@v2
         with:
+          body: |
+            ## Excel进销存工具
+
+            轻量级跨平台 Excel 进销存数据处理工具。
+
+            - **Windows**: 下载 `Excel进销存工具-Windows.exe`，双击运行
+            - **Mac**: 下载 `Excel进销存工具-Mac.zip`，解压后打开 .app 文件
           files: |
-            Excel进销存工具.exe
+            Excel进销存工具-Windows.exe
             Excel进销存工具-Mac.zip

@@ -1,7 +1,7 @@
 """PyInstaller 打包脚本
 
-Windows: python build.py → 生成 dist/Excel进销存工具.exe
-Mac: python build.py → 生成 dist/Excel进销存工具.app
+Windows: python build.py → 生成 dist/ExcelInventoryTool.exe
+Mac: python build.py → 生成 dist/ExcelInventoryTool.app
 """
 import PyInstaller.__main__
 import sys
@@ -12,13 +12,15 @@ def build():
     project_root = os.path.dirname(os.path.abspath(__file__))
     src_dir = os.path.join(project_root, "src")
 
+    add_data_sep = ";" if sys.platform == "win32" else ":"
+
     args = [
         os.path.join(src_dir, "main.py"),
-        "--name=Excel进销存工具",
+        "--name=ExcelInventoryTool",
         "--onefile",
         "--windowed",
         "--noconfirm",
-        "--add-data=" + src_dir + ";" + "src" if sys.platform == "win32" else "--add-data=" + src_dir + ":" + "src",
+        "--add-data=" + src_dir + add_data_sep + "src",
     ]
 
     PyInstaller.__main__.run(args)
